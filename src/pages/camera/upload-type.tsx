@@ -167,6 +167,11 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
       console.log('Run here');
       if (cameraRef.current) {
         setText('Has cameraRef');
+        if (navigator.mediaDevices && MediaRecorder.isTypeSupported(mimeType)) {
+          setText(`Supported MIME type: ${mimeType}`);
+        } else {
+          setText('MIME type not supported or MediaRecorder not available');
+        }
         const recorder = new MediaRecorder(
           cameraRef.current.stream as MediaStream,
           {
