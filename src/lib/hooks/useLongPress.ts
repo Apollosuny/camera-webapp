@@ -17,9 +17,11 @@ export const useLongPress = () => {
   };
 
   const handleOnClick = () => {
+    console.log('Click button');
     if (isLongPress.current) {
       return;
     }
+    console.log('set action');
     setAction('click');
   };
 

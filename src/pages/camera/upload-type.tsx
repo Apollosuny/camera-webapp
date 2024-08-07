@@ -29,6 +29,8 @@ import {
   mimeType,
   videoLimitSize,
 } from '@/lib/constants/post';
+import { Camera } from '@/components/video/camera';
+import { CameraType } from '@/components/video/types';
 
 import RecordingButton from './recording-button';
 import { useLongPress } from '@/lib/hooks/useLongPress';
@@ -46,6 +48,7 @@ export type UploadTypeRef = {
 
 const UploadType = forwardRef<UploadTypeRef, Props>(
   ({ onImagesChanged, onVideoChanged }, ref) => {
+    const cameraRef = useRef<CameraType>(null);
     const [isPreviewing, setIsPreviewing] = useState<boolean>(false);
     const [cameraMode, setCameraMode] = useState<CAMERA_TYPE>(
       CAMERA_TYPE.FRONT
@@ -158,10 +161,14 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
     };
 
     const startRecording = async () => {
-      if (mediaStream) {
-        const recorder = new MediaRecorder(mediaStream, {
-          mimeType: mimeType,
-        });
+      console.log('Run here');
+      if (cameraRef.current) {
+        const recorder = new MediaRecorder(
+          cameraRef.current.stream as MediaStream,
+          {
+            mimeType: mimeType,
+          }
+        );
         mediaRecorderRef.current = recorder;
 
         mediaRecorderRef.current.start();
@@ -220,27 +227,13 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
       onCloseWebcam();
     };
 
-    const onCaptureImage = () => {
-      if (videoRef.current && canvasRef.current) {
-        const video = videoRef.current;
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-
-        if (context && video.videoWidth && video.videoHeight) {
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-
-          context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-          canvas.toBlob((blob) => {
-            if (blob) {
-              const url = URL.createObjectURL(blob);
-              setCaptureImage({ blob, url });
-            }
-          }, 'image/jpeg');
-          onCloseWebcam();
-          setIsPreviewing(true);
-        }
+    const onCaptureImage = async () => {
+      if (cameraRef.current) {
+        const photo = await cameraRef.current.takePhoto();
+        console.log(photo);
+        setCaptureImage(photo);
+        onCloseWebcam();
+        setIsPreviewing(true);
       }
     };
 
@@ -472,24 +465,15 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
               ) : (
                 <>
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                  {action} - {progress}
-                  <video
-                    ref={videoRef}
-                    autoPlay
-                    style={{
-                      flex: '0.6',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      objectFit: 'contain',
-                    }}
-                  />
+                  <Camera errorMessages={{}} ref={cameraRef} />
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
-                  <div
-                    className='flex w-full -translate-y-5 flex-col items-center justify-end'
-                    style={{ flex: '0.4' }}
-                  >
-                    {buildCaptureActions}
+                  <div className='absolute bottom-6'>
+                    <div
+                      className='flex w-full -translate-y-5 flex-col items-center justify-end'
+                      style={{ flex: '0.4' }}
+                    >
+                      {buildCaptureActions}
+                    </div>
                   </div>
                 </>
               )}

@@ -16,10 +16,12 @@
     "next": "14.2.5",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
+    "react-camera-pro": "^1.4.0",
     "react-dom": "^18",
     "react-draggable": "^4.4.6",
     "react-loading-skeleton": "^3.4.0",
-    "react-multi-carousel": "^2.8.5"
+    "react-multi-carousel": "^2.8.5",
+    "styled-components": "^6.1.12"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.7",
