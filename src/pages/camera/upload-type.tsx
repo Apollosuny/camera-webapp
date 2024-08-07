@@ -312,31 +312,7 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
     }, []);
 
     const buildCaptureActions = (
-      <div className='flex items-center justify-center'>
-        <div
-          className='flex items-center justify-center gap-4'
-          style={{ flex: '0.4' }}
-        >
-          <div
-            className='flex cursor-pointer flex-col items-center justify-center'
-            tabIndex={-1}
-            role='button'
-            onClick={handleChangeCameraType}
-            onKeyDown={handleChangeCameraType}
-          >
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-[#53565466]/[.4]'>
-              <RefreshCcw size={24} stroke='white' />
-            </div>
-            <span className='mt-1 text-xs text-white'>Flip</span>
-          </div>
-          <div className='flex cursor-pointer flex-col items-center justify-center'>
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-[#53565466]/[.4]'>
-              <Sticker size={24} stroke='white' />
-            </div>
-            <span className='mt-1 text-xs text-white'>Challenges</span>
-          </div>
-        </div>
-
+      <div className='flex items-center justify-center gap-8'>
         <RecordingButton
           isRecording={isRecording}
           maxDuration={maxDuration}

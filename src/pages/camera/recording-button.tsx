@@ -86,15 +86,6 @@ const RecordingButton: React.FC<Props> = ({
         customClassNames
       )}
       style={{ flex: '0.2' }}
-      tabIndex={-1}
-      role='button'
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseUp}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchStart}
-      onTouchEnd={onTouchEnd}
       onContextMenu={(e) => e.preventDefault()}
     >
       <div
@@ -108,6 +99,12 @@ const RecordingButton: React.FC<Props> = ({
           ref={buttonRef}
           type='button'
           className='relative z-[999] flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-white'
+          onClick={onClick}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
         />
         <svg
           className='absolute left-0 top-0 h-full w-full -rotate-90 rounded-full'
