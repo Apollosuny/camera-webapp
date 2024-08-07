@@ -105,6 +105,10 @@ const RecordingButton: React.FC<Props> = ({
           onMouseLeave={onMouseUp}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
+          onContextMenu={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
         />
         <svg
           className='absolute left-0 top-0 h-full w-full -rotate-90 rounded-full'
