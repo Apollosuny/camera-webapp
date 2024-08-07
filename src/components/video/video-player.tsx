@@ -112,7 +112,7 @@ export const VideoPlayer: React.FC<Props> = ({ source, style }) => {
       </div>
       {duration > 0 && (
         <div className='absolute right-3 top-3 flex items-center justify-center rounded-[10px] bg-white px-3 py-[1px]'>
-          <span className='text-xs text-black font-normal'>{currentTime}</span>
+          <span className='text-xs !text-black font-normal'>{currentTime}</span>
         </div>
       )}
     </div>
