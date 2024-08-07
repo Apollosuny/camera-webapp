@@ -84,6 +84,8 @@ export const VideoPlayer: React.FC<Props> = ({ source, style }) => {
         ref={videoRef}
         src={source}
         playsInline
+        muted
+        autoPlay
         preload='auto'
         style={{
           width: '100%',
