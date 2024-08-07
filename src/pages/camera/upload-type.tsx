@@ -160,6 +160,8 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
       }
     };
 
+    const [update, setUpdate] = useState<boolean>(false);
+
     const startRecording = async () => {
       console.log('Run here');
       if (cameraRef.current) {
@@ -170,6 +172,8 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
           }
         );
         mediaRecorderRef.current = recorder;
+
+        setUpdate(true);
 
         mediaRecorderRef.current.start();
 
@@ -278,6 +282,7 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
         onCaptureImage();
       } else {
         stopRecording();
+        setUpdate(false);
       }
     }, [action]);
 
@@ -465,6 +470,7 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
               ) : (
                 <>
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+
                   <Camera errorMessages={{}} ref={cameraRef} />
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
                   <div className='absolute bottom-6'>
@@ -472,6 +478,8 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
                       className='flex w-full -translate-y-5 flex-col items-center justify-end'
                       style={{ flex: '0.4' }}
                     >
+                      {update && <h3>Have mediarecorder</h3>}
+                      <h3>{action ?? 'No action'}</h3>
                       {buildCaptureActions}
                     </div>
                   </div>
