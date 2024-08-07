@@ -1,3 +1,9 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "no-warning-comments": "off",
+    "no-console": "off",
+    "no-unused-vars": "off"
+    // Các quy tắc khác...
+  }
 }
