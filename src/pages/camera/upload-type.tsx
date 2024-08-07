@@ -161,16 +161,19 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
     };
 
     const [update, setUpdate] = useState<boolean>(false);
+    const [text, setText] = useState<any>();
 
     const startRecording = async () => {
       console.log('Run here');
       if (cameraRef.current) {
+        setText('Has cameraRef');
         const recorder = new MediaRecorder(
           cameraRef.current.stream as MediaStream,
           {
             mimeType: mimeType,
           }
         );
+        setText('Has recorder');
         mediaRecorderRef.current = recorder;
 
         setUpdate(true);
@@ -283,6 +286,7 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
       } else {
         stopRecording();
         setUpdate(false);
+        setText(null);
       }
     }, [action]);
 
@@ -479,6 +483,7 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
                       style={{ flex: '0.4' }}
                     >
                       {update && <h3>Have mediarecorder</h3>}
+                      <h3>{text}</h3>
                       <h3>{action ?? 'No action'}</h3>
                       {buildCaptureActions}
                     </div>
