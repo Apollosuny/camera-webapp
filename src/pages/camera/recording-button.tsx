@@ -104,6 +104,8 @@ const RecordingButton: React.FC<Props> = ({
           onMouseLeave={onMouseUp}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
+          onPointerDown={onTouchStart}
+          onPointerUp={onTouchEnd}
           onContextMenu={(e) => e.preventDefault()}
         />
         <svg
