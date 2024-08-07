@@ -13,8 +13,8 @@ import Carousel from 'react-multi-carousel';
 
 import { VideoPlayer } from '@/components/video/video-player';
 
-import { ImageSelector } from './image-selector';
-import { FileType, UPLOAD_TYPES } from './usePostCreate';
+import ImageSelector from './image-selector';
+import { FileType, UPLOAD_TYPES } from '@/lib/hooks/usePostCreate';
 import 'react-multi-carousel/lib/styles.css';
 
 type Props = {
@@ -25,7 +25,7 @@ type Props = {
   onBack?: () => void;
 };
 
-export const UploadPreview: React.FC<Props> = ({
+const UploadPreview: React.FC<Props> = ({
   images,
   videoFile,
   uploadType,
@@ -259,3 +259,5 @@ export const UploadPreview: React.FC<Props> = ({
     </div>
   );
 };
+
+export default UploadPreview;

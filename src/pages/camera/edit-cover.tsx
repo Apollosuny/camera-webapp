@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import Skeleton from 'react-loading-skeleton';
 
-import { ImageSelector } from './image-selector';
+import ImageSelector from './image-selector';
 import { BodyText } from '@/components/typography/body-text';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
   onSelectThumbnail?: (value: { blob: Blob; url: string }) => void;
 };
 
-export const EditCover: React.FC<Props> = ({
+const EditCover: React.FC<Props> = ({
   isShowing = false,
   videoFile,
   onClose,
@@ -319,6 +319,8 @@ export const EditCover: React.FC<Props> = ({
     )
   );
 };
+
+export default EditCover;
 
 type HeaderProps = {
   onClose?: () => void;

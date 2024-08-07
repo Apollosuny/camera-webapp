@@ -30,8 +30,8 @@ import {
   videoLimitSize,
 } from '@/lib/constants/post';
 
-import { RecordingButton } from './recording-button';
-import { useLongPress } from './useLongPress';
+import RecordingButton from './recording-button';
+import { useLongPress } from '@/lib/hooks/useLongPress';
 
 type Props = {
   onImagesChanged: (value: File[]) => void;

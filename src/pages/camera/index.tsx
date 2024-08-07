@@ -3,10 +3,13 @@
 import { ChevronLeft, Trash2 } from 'lucide-react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { MainUploadSection } from './upload-content';
-import { UploadPreview } from './upload-preview';
+import UploadPreview from './upload-preview';
 import UploadType, { UploadTypeRef } from './upload-type';
-import { FileType, POST_STATUS, usePostCreate } from './usePostCreate';
+import {
+  FileType,
+  POST_STATUS,
+  usePostCreate,
+} from '@/lib/hooks/usePostCreate';
 import { BodyText } from '@/components/typography/body-text';
 
 const STEP = {
@@ -15,7 +18,7 @@ const STEP = {
   DETAILS: 2,
 };
 
-export const UploadContentLayout: React.FC = () => {
+const UploadContentLayout: React.FC = () => {
   const [activeStep, setActiveStep] = useState<number>(STEP.TYPE);
   const [showDiscardPost, setShowDiscardPost] = useState<boolean>(false);
   const uploadTypeRef = useRef<UploadTypeRef>(null);
@@ -88,24 +91,24 @@ export const UploadContentLayout: React.FC = () => {
             onBack={handleBackToCamera}
           />
         );
-      case 2:
-        return (
-          <MainUploadSection
-            images={state.imageFiles}
-            hasFiles={state.hasFiles}
-            videoFile={state.videoFile}
-            submitting={state.submitting}
-            progress={state.progress}
-            text={state.text}
-            targetGroup={state.targetGroup}
-            canSubmit={state.canSubmit}
-            onTextChanged={state.setText}
-            onTargetGroupChanged={(val: POST_STATUS) =>
-              state.onTargetGroupChanged(val)
-            }
-            setThumbnailFile={state.setThumbnailFile}
-          />
-        );
+      // case 2:
+      // return (
+      //   <UploadContent
+      //     images={state.imageFiles}
+      //     hasFiles={state.hasFiles}
+      //     videoFile={state.videoFile}
+      //     submitting={state.submitting}
+      //     progress={state.progress}
+      //     text={state.text}
+      //     targetGroup={state.targetGroup}
+      //     canSubmit={state.canSubmit}
+      //     onTextChanged={state.setText}
+      //     onTargetGroupChanged={(val: POST_STATUS) =>
+      //       state.onTargetGroupChanged(val)
+      //     }
+      //     setThumbnailFile={state.setThumbnailFile}
+      //   />
+      // );
       default:
         return 'Default step';
     }
@@ -131,6 +134,8 @@ export const UploadContentLayout: React.FC = () => {
     </div>
   );
 };
+
+export default UploadContentLayout;
 
 type HeaderProps = {
   currentStep: number;

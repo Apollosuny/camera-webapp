@@ -10,7 +10,7 @@ type Props = {
 
 const imageLimitSize = 5 * 1024 * 1024;
 
-export const ImageSelector: React.FC<Props> = ({
+const ImageSelector: React.FC<Props> = ({
   multiple = true,
   hasText = false,
   onOpenSelectFile,
@@ -82,3 +82,4 @@ export const ImageSelector: React.FC<Props> = ({
     </div>
   );
 };
+export default ImageSelector;

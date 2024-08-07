@@ -1,4 +1,4 @@
-import { UploadContentLayout } from '@/pages/camera';
+import UploadContentLayout from '@/pages/camera';
 import Image from 'next/image';
 
 export default function Home() {

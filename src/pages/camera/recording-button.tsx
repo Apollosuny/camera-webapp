@@ -13,7 +13,7 @@ type Props = {
   customClassNames?: string;
 };
 
-export const RecordingButton: React.FC<Props> = ({
+const RecordingButton: React.FC<Props> = ({
   maxDuration = 15,
   isRecording = false,
   progress = 0,
@@ -126,3 +126,5 @@ export const RecordingButton: React.FC<Props> = ({
     </div>
   );
 };
+
+export default RecordingButton;
