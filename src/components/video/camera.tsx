@@ -271,27 +271,28 @@ const initCameraStream = async (
         handleError(err, setNotSupported, setPermissionDenied);
       });
   } else {
-    const getWebcam =
-      navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia;
-    if (getWebcam) {
-      getWebcam(
-        constraints,
-        async (stream) => {
-          if (isMounted) {
-            setStream(handleSuccess(stream, setNumberOfCameras));
-          }
-        },
-        (err) => {
-          handleError(err as Error, setNotSupported, setPermissionDenied);
-        }
-      );
-    } else {
-      setNotSupported(true);
-    }
+    // const getWebcam =
+    //   navigator.getUserMedia ||
+    //   navigator.webkitGetUserMedia ||
+    //   navigator.mozGetUserMedia ||
+    //   navigator.mozGetUserMedia ||
+    //   navigator.msGetUserMedia;
+    // if (getWebcam) {
+    //   getWebcam(
+    //     constraints,
+    //     async (stream) => {
+    //       if (isMounted) {
+    //         setStream(handleSuccess(stream, setNumberOfCameras));
+    //       }
+    //     },
+    //     (err) => {
+    //       handleError(err as Error, setNotSupported, setPermissionDenied);
+    //     }
+    //   );
+    // } else {
+
+    // }
+    setNotSupported(true);
   }
 };
 
