@@ -472,7 +472,7 @@ const UploadType = forwardRef<UploadTypeRef, Props>(
               ) : (
                 <>
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                  {action}
+                  {action} - {progress}
                   <video
                     ref={videoRef}
                     autoPlay
