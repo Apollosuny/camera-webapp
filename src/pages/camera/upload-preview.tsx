@@ -161,7 +161,6 @@ const UploadPreview: React.FC<Props> = ({
                   width: '100%',
                   height: 'auto',
                   maxHeight: '60vh',
-                  objectFit: 'contain',
                 }}
               />
             </div>
