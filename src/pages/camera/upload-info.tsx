@@ -81,7 +81,7 @@ const MainUploadSection: React.FC<Props> = ({
     video.setAttribute('class', 'hidden')
 
     video.src = videoUrl
-    video.autoplay = false
+    video.autoplay = true
     video.muted = true // Mute the video to avoid autoplay issues
     video.playsInline = true // For mobile devices
     video.crossOrigin = 'anonymous' // Prevent CORS issuesf
@@ -122,11 +122,12 @@ const MainUploadSection: React.FC<Props> = ({
     })
 
     document.body.appendChild(video)
+    video.load()
 
     // Cleanup on component unmount
     return () => {
       video.removeEventListener('loadedmetadata', loadedMetaData)
-      video.removeEventListener('canplaythrough', seekedEvent)
+      video.removeEventListener('seeked', seekedEvent)
       video.removeEventListener('error', () => {
         URL.revokeObjectURL(videoUrl)
       })
@@ -189,6 +190,9 @@ const MainUploadSection: React.FC<Props> = ({
             </div>
           </div>
         </div>
+
+        <div className="mt-6">{textInfor}</div>
+
         <div className="mt-6 w-full px-4">
           <textarea
             name="caption"
