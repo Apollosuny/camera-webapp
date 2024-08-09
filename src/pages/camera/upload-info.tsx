@@ -106,9 +106,10 @@ const MainUploadSection: React.FC<Props> = ({
       const canvas = canvasRef.current
       const context = canvas?.getContext('2d')
       if (context && canvas) {
-        setTextInfo('Has context')
         context.drawImage(video, 0, 0, 160, 200)
+        setTextInfo('Has context')
       }
+      setTextInfo('After draw')
       URL.revokeObjectURL(videoUrl)
     }
 
