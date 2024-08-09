@@ -7,7 +7,7 @@ import UploadPreview from './upload-preview'
 import UploadType, { UploadTypeRef } from './upload-type'
 import { FileType, POST_STATUS, usePostCreate } from '@/lib/hooks/usePostCreate'
 import { BodyText } from '@/components/typography/body-text'
-import { MainUploadSection } from './upload-info'
+import MainUploadSection from './upload-info'
 
 const STEP = {
   TYPE: 0,

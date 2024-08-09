@@ -21,7 +21,7 @@ type Props = {
   onSubmitPost?: () => void
 }
 
-export const MainUploadSection: React.FC<Props> = ({
+const MainUploadSection: React.FC<Props> = ({
   images,
   hasFiles,
   videoFile,
@@ -243,3 +243,5 @@ export const MainUploadSection: React.FC<Props> = ({
     </div>
   )
 }
+
+export default MainUploadSection
