@@ -135,20 +135,21 @@ const MainUploadSection: React.FC<Props> = ({
       <div className="flex-[0.9_0.9_0%]">
         <div className="mt-6">
           <div className="scrollbar-none gap-2 overflow-scroll whitespace-nowrap px-2">
-            {images.map(i => (
-              <div
-                className="mx-2 inline-block aspect-[4/5] w-40 overflow-hidden rounded-md"
-                key={i.url}
-              >
-                <NextImage
-                  src={i.url}
-                  alt="im1"
-                  width={160}
-                  height={200}
-                  className="h-full w-full object-fill"
-                />
-              </div>
-            ))}
+            {images &&
+              images.map(i => (
+                <div
+                  className="mx-2 inline-block aspect-[4/5] w-40 overflow-hidden rounded-md"
+                  key={i.url}
+                >
+                  <NextImage
+                    src={i.url}
+                    alt="im1"
+                    width={160}
+                    height={200}
+                    className="h-full w-full object-fill"
+                  />
+                </div>
+              ))}
             <div
               className={classNames(
                 'mx-2 hidden aspect-[4/5] w-40 overflow-hidden rounded-md border border-dotted relative ',
