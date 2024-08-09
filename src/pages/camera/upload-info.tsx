@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FileType, POST_STATUS } from '@/lib/hooks/usePostCreate'
 
 import EditCover from './edit-cover'
+import { VideoPlayer } from '@/components/video/video-player'
 
 type Props = {
   images: FileType[]
@@ -70,6 +71,7 @@ const MainUploadSection: React.FC<Props> = ({
 
   const [videoDuration, setVideoDuration] = useState<number>(0)
   const [textInfor, setTextInfo] = useState<string | null>(null)
+  const [url, setUrl] = useState<string>()
 
   useEffect(() => {
     if (!videoFile) {
@@ -77,63 +79,64 @@ const MainUploadSection: React.FC<Props> = ({
     }
     setTextInfo('Has video file')
     const videoUrl = URL.createObjectURL(videoFile)
-    const video = document.createElement('video')
-    video.setAttribute('class', 'hidden')
+    setUrl(videoUrl)
+    // const video = document.createElement('video')
+    // video.setAttribute('class', 'hidden')
 
-    video.src = videoUrl
-    video.muted = true // Mute the video to avoid autoplay issues
-    video.playsInline = true // For mobile devices
-    video.crossOrigin = 'anonymous' // Prevent CORS issuesf
+    // video.src = videoUrl
+    // video.muted = true // Mute the video to avoid autoplay issues
+    // video.playsInline = true // For mobile devices
+    // video.crossOrigin = 'anonymous' // Prevent CORS issuesf
 
-    setTextInfo('Set config video')
+    // setTextInfo('Set config video')
 
-    const loadedMetaData = () => {
-      if (video.duration === Infinity || isNaN(Number(video.duration))) {
-        video.currentTime = 1e101
-        const handleTimeUpdate = () => {
-          video.currentTime = 0
-          video.removeEventListener('timeupdate', handleTimeUpdate)
-          setVideoDuration(video.duration)
-        }
-        video.addEventListener('timeupdate', handleTimeUpdate)
-      } else {
-        video.currentTime = 0
-        setVideoDuration(video.duration)
-      }
-    }
+    // const loadedMetaData = () => {
+    //   if (video.duration === Infinity || isNaN(Number(video.duration))) {
+    //     video.currentTime = 1e101
+    //     const handleTimeUpdate = () => {
+    //       video.currentTime = 0
+    //       video.removeEventListener('timeupdate', handleTimeUpdate)
+    //       setVideoDuration(video.duration)
+    //     }
+    //     video.addEventListener('timeupdate', handleTimeUpdate)
+    //   } else {
+    //     video.currentTime = 0
+    //     setVideoDuration(video.duration)
+    //   }
+    // }
 
-    const seekedEvent = () => {
-      const canvas = canvasRef.current
-      const context = canvas?.getContext('2d')
-      if (context && canvas) {
-        context.drawImage(video, 0, 0, 160, 200)
-        setTextInfo('Has context')
-      }
-      setTextInfo('After draw')
-      URL.revokeObjectURL(videoUrl)
-    }
+    // const seekedEvent = () => {
+    //   const canvas = canvasRef.current
+    //   const context = canvas?.getContext('2d')
+    //   if (context && canvas) {
+    //     context.drawImage(video, 0, 0, 160, 200)
+    //     setTextInfo('Has context')
+    //   }
+    //   setTextInfo('After draw')
+    //   URL.revokeObjectURL(videoUrl)
+    // }
 
-    video.addEventListener('loadedmetadata', loadedMetaData)
+    // video.addEventListener('loadedmetadata', loadedMetaData)
 
-    video.addEventListener('seeked', seekedEvent)
+    // video.addEventListener('seeked', seekedEvent)
 
-    video.addEventListener('error', e => {
-      console.error('Video load error:', e)
-      URL.revokeObjectURL(videoUrl)
-    })
+    // video.addEventListener('error', e => {
+    //   console.error('Video load error:', e)
+    //   URL.revokeObjectURL(videoUrl)
+    // })
 
-    document.body.appendChild(video)
+    // document.body.appendChild(video)
 
-    // Cleanup on component unmount
-    return () => {
-      video.removeEventListener('loadedmetadata', loadedMetaData)
-      video.removeEventListener('seeked', seekedEvent)
-      video.removeEventListener('error', () => {
-        URL.revokeObjectURL(videoUrl)
-      })
-      document.body.removeChild(video)
-      URL.revokeObjectURL(videoUrl)
-    }
+    // // Cleanup on component unmount
+    // return () => {
+    //   video.removeEventListener('loadedmetadata', loadedMetaData)
+    //   video.removeEventListener('seeked', seekedEvent)
+    //   video.removeEventListener('error', () => {
+    //     URL.revokeObjectURL(videoUrl)
+    //   })
+    //   document.body.removeChild(video)
+    //   URL.revokeObjectURL(videoUrl)
+    // }
   }, [videoFile])
 
   return (
@@ -164,7 +167,7 @@ const MainUploadSection: React.FC<Props> = ({
                 },
               )}
             >
-              <canvas ref={canvasRef} width="160" height="200" />
+              {/* <canvas ref={canvasRef} width="160" height="200" />
               <div className="absolute right-2 top-3 flex items-center justify-center rounded-[20px] bg-white px-2 py-[1px] text-xs !font-normal !text-[#121212]">
                 {videoDuration}
               </div>
@@ -176,7 +179,8 @@ const MainUploadSection: React.FC<Props> = ({
                 onKeyDown={() => setShowEditCover(true)}
               >
                 Edit Cover
-              </div>
+              </div> */}
+              <VideoPlayer source={url!} />
               <div
                 className={classNames(
                   'absolute hidden w-full h-full justify-center items-center top-0',

@@ -1,80 +1,80 @@
-import classNames from 'classnames';
-import { CirclePause, CirclePlay } from 'lucide-react';
-import React, { CSSProperties, useEffect, useRef, useState } from 'react';
+import classNames from 'classnames'
+import { CirclePause, CirclePlay } from 'lucide-react'
+import React, { CSSProperties, useEffect, useRef, useState } from 'react'
 
 // import { formatTimeDuration } from 'utils/datetime-helpers';
 
 type Props = {
-  source: string;
-  style?: CSSProperties;
-};
+  source: string
+  style?: CSSProperties
+}
 
 export const VideoPlayer: React.FC<Props> = ({ source, style }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(0);
+  const [currentTime, setCurrentTime] = useState<number>(0)
+  const [duration, setDuration] = useState<number>(0)
 
   useEffect(() => {
-    const video = videoRef.current;
+    const video = videoRef.current
 
     const updateVideoInfo = () => {
       if (video) {
-        setCurrentTime(video.currentTime);
+        setCurrentTime(video.currentTime)
         if (video.duration === Infinity || isNaN(Number(video.duration))) {
-          video.currentTime = 1e101;
+          video.currentTime = 1e101
 
           const handleTimeUpdate = () => {
-            video.currentTime = 0;
-            video.removeEventListener('timeupdate', handleTimeUpdate);
-            setDuration(video.duration);
-          };
+            video.currentTime = 0
+            video.removeEventListener('timeupdate', handleTimeUpdate)
+            setDuration(video.duration)
+          }
 
-          video.addEventListener('timeupdate', handleTimeUpdate);
+          video.addEventListener('timeupdate', handleTimeUpdate)
         } else {
-          video.currentTime = 0;
-          setDuration(video.duration);
+          video.currentTime = 0
+          setDuration(video.duration)
         }
       }
-    };
+    }
 
     if (video) {
-      video.addEventListener('loadedmetadata', updateVideoInfo);
+      video.addEventListener('loadedmetadata', updateVideoInfo)
       video.addEventListener('timeupdate', () =>
-        setCurrentTime(video.duration - video.currentTime)
-      );
+        setCurrentTime(video.duration - video.currentTime),
+      )
     }
 
     return () => {
       if (video) {
-        video.removeEventListener('loadedmetadata', updateVideoInfo);
+        video.removeEventListener('loadedmetadata', updateVideoInfo)
         video.removeEventListener('timeupdate', () =>
-          setCurrentTime(video.duration - video.currentTime)
-        );
+          setCurrentTime(video.duration - video.currentTime),
+        )
       }
-    };
-  }, [source]);
+    }
+  }, [source])
 
   const handlePlayPause = () => {
     if (!videoRef.current) {
-      return;
+      return
     }
-    const video = videoRef.current;
+    const video = videoRef.current
     if (!isPlaying) {
-      video.play();
-      setIsPlaying(true);
+      video.play()
+      setIsPlaying(true)
     } else {
-      video.pause();
-      setIsPlaying(false);
+      video.pause()
+      setIsPlaying(false)
     }
-  };
+  }
 
   return (
     <div
-      className='relative'
+      className="relative"
       tabIndex={-1}
-      role='button'
+      role="button"
       onClick={handlePlayPause}
       onKeyDown={handlePlayPause}
       style={style}
@@ -85,18 +85,18 @@ export const VideoPlayer: React.FC<Props> = ({ source, style }) => {
         src={source}
         playsInline
         muted
-        autoPlay
-        preload='auto'
+        autoPlay={false}
+        preload="auto"
         style={{
           width: '100%',
           height: 'auto',
         }}
       />
       <div
-        id='play-button'
+        id="play-button"
         className={classNames(
           'absolute w-[50px] h-[50px] flex items-center justify-center rounded-full bg-[#121212]/[.2]',
-          isPlaying && 'hidden'
+          isPlaying && 'hidden',
         )}
         style={{
           top: '50%',
@@ -105,16 +105,16 @@ export const VideoPlayer: React.FC<Props> = ({ source, style }) => {
         }}
       >
         {isPlaying ? (
-          <CirclePause size={48} stroke='white' strokeWidth={1} />
+          <CirclePause size={48} stroke="white" strokeWidth={1} />
         ) : (
-          <CirclePlay size={48} stroke='white' strokeWidth={1} />
+          <CirclePlay size={48} stroke="white" strokeWidth={1} />
         )}
       </div>
       {duration > 0 && (
-        <div className='absolute right-3 top-3 flex items-center justify-center rounded-[10px] bg-white px-3 py-[1px]'>
-          <span className='text-xs !text-black font-normal'>{currentTime}</span>
+        <div className="absolute right-3 top-3 flex items-center justify-center rounded-[10px] bg-white px-3 py-[1px]">
+          <span className="text-xs !text-black font-normal">{currentTime}</span>
         </div>
       )}
     </div>
-  );
-};
+  )
+}
