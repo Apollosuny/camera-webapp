@@ -69,20 +69,24 @@ const MainUploadSection: React.FC<Props> = ({
   }
 
   const [videoDuration, setVideoDuration] = useState<number>(0)
+  const [textInfor, setTextInfo] = useState<string | null>(null)
 
   useEffect(() => {
     if (!videoFile) {
       return
     }
+    setTextInfo('Has video file')
     const videoUrl = URL.createObjectURL(videoFile)
     const video = document.createElement('video')
     video.setAttribute('class', 'hidden')
 
     video.src = videoUrl
-    video.autoplay = true
+    video.autoplay = false
     video.muted = true // Mute the video to avoid autoplay issues
     video.playsInline = true // For mobile devices
     video.crossOrigin = 'anonymous' // Prevent CORS issuesf
+
+    setTextInfo('Set config video')
 
     const loadedMetaData = () => {
       if (video.duration === Infinity || isNaN(Number(video.duration))) {
@@ -104,12 +108,13 @@ const MainUploadSection: React.FC<Props> = ({
       canvas
         ?.getContext('2d')
         ?.drawImage(video, 0, 0, canvas.width, canvas.height)
+      setTextInfo('Get canvas')
       URL.revokeObjectURL(videoUrl)
     }
 
     video.addEventListener('loadedmetadata', loadedMetaData)
 
-    video.addEventListener('canplaythrough', seekedEvent)
+    video.addEventListener('seeked', seekedEvent)
 
     video.addEventListener('error', e => {
       console.error('Video load error:', e)
@@ -179,7 +184,6 @@ const MainUploadSection: React.FC<Props> = ({
                   },
                 )}
               >
-                <progress max={100} value={progress} />
                 <progress max={100} value={progress} />
               </div>
             </div>
