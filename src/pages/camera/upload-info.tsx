@@ -81,7 +81,6 @@ const MainUploadSection: React.FC<Props> = ({
     video.setAttribute('class', 'hidden')
 
     video.src = videoUrl
-    video.autoplay = true
     video.muted = true // Mute the video to avoid autoplay issues
     video.playsInline = true // For mobile devices
     video.crossOrigin = 'anonymous' // Prevent CORS issuesf
@@ -108,7 +107,7 @@ const MainUploadSection: React.FC<Props> = ({
       const context = canvas?.getContext('2d')
       if (context && canvas) {
         setTextInfo('Has context')
-        context.drawImage(video, 0, 0, canvas.width, canvas.height)
+        context.drawImage(video, 0, 0, 160, 200)
       }
       URL.revokeObjectURL(videoUrl)
     }
@@ -123,7 +122,6 @@ const MainUploadSection: React.FC<Props> = ({
     })
 
     document.body.appendChild(video)
-    video.load()
 
     // Cleanup on component unmount
     return () => {
