@@ -110,6 +110,11 @@ const EditCover: React.FC<Props> = ({
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current
 
+      video.src = videoUrl
+      video.muted = true // Mute the video to avoid autoplay issues
+      video.playsInline = true // For mobile devices
+      video.crossOrigin = 'anonymous'
+
       const handleLoadedMetadata = () => {
         if (video.duration === Infinity || isNaN(Number(video.duration))) {
           video.currentTime = 1e101
@@ -128,9 +133,17 @@ const EditCover: React.FC<Props> = ({
 
       video.addEventListener('loadeddata', handleLoadedMetadata)
 
-      return () => {
-        video.removeEventListener('loadeddata', handleLoadedMetadata)
-      }
+      video.addEventListener('error', e => {
+        console.error('Video load error:', e)
+        document.body.removeChild(video)
+      })
+
+      document.body.appendChild(video) // Append video to body to ensure it can load
+      video.load()
+
+      // return () => {
+      //   video.removeEventListener('loadeddata', handleLoadedMetadata)
+      // }
     }
   }, [videoRef.current, canvasRef.current])
 

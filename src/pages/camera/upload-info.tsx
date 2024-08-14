@@ -73,104 +73,92 @@ const MainUploadSection: React.FC<Props> = ({
   const [textInfor, setTextInfo] = useState<string | null>(null)
   const [url, setUrl] = useState<string>()
 
+  const [thumbnail, setThumbnail] = useState<string | null>(null)
+
+  // useEffect(() => {
+  //   if (!videoFile) {
+  //     return
+  //   }
+  //   setTextInfo('Has video file')
+  //   const videoUrl = URL.createObjectURL(videoFile)
+  //   setUrl(videoUrl)
+  //   const video = document.createElement('video')
+  //   video.setAttribute('class', 'hidden')
+
+  //   video.src = videoUrl
+  //   video.muted = true
+  //   video.playsInline = true
+  //   video.crossOrigin = 'anonymous'
+
+  //   setTextInfo('Set config video')
+  //   video.addEventListener('loadeddata', () => {
+  //     // Wait for the video to be ready
+  //     if (video.duration === Infinity || isNaN(Number(video.duration))) {
+  //       video.currentTime = 1e101
+  //       const handleTimeUpdate = () => {
+  //         video.currentTime = 0
+  //         video.removeEventListener('timeupdate', handleTimeUpdate)
+  //         setVideoDuration(video.duration)
+  //       }
+  //       video.addEventListener('timeupdate', handleTimeUpdate)
+  //     } else {
+  //       video.currentTime = 0
+  //       setVideoDuration(video.duration)
+  //     }
+  //   })
+
+  //   video.addEventListener('seeked', () => {
+  //     // Now we can draw the frame
+  //     const canvas = canvasRef.current
+  //     canvas
+  //       ?.getContext('2d')
+  //       ?.drawImage(video, 0, 0, canvas.width, canvas.height)
+  //     URL.revokeObjectURL(video.src) // Clean up
+  //     document.body.removeChild(video)
+  //   })
+
+  //   video.addEventListener('error', e => {
+  //     console.error('Video load error:', e)
+  //     document.body.removeChild(video)
+  //   })
+
+  //   document.body.appendChild(video) // Append video to body to ensure it can load
+  //   video.load() // Load the video to ensure metadata is available
+  // }, [videoFile])
+
   useEffect(() => {
     if (!videoFile) {
       return
     }
-    setTextInfo('Has video file')
-    const videoUrl = URL.createObjectURL(videoFile)
-    setUrl(videoUrl)
+
     const video = document.createElement('video')
-    video.setAttribute('class', 'hidden')
+    const canvas = canvasRef.current
+    const ctx = canvas?.getContext('2d')
+    const videoUrl = URL.createObjectURL(videoFile)
 
     video.src = videoUrl
     video.muted = true
     video.playsInline = true
-    video.crossOrigin = 'anonymous'
 
-    setTextInfo('Set config video')
-
-    // const loadedMetaData = () => {
-    // if (video.duration === Infinity || isNaN(Number(video.duration))) {
-    //   video.currentTime = 1e101
-    //   const handleTimeUpdate = () => {
-    //     video.currentTime = 0
-    //     video.removeEventListener('timeupdate', handleTimeUpdate)
-    //     setVideoDuration(video.duration)
-    //   }
-    //   video.addEventListener('timeupdate', handleTimeUpdate)
-    // } else {
-    //   video.currentTime = 0
-    //   setVideoDuration(video.duration)
-    // }
-    // }
-
-    // const seekedEvent = () => {
-    //   const canvas = canvasRef.current
-    //   const context = canvas?.getContext('2d')
-    //   if (context && canvas) {
-    //     context.drawImage(video, 0, 0, 160, 200)
-    //     setTextInfo('Has context')
-    //   }
-    //   setTextInfo('After draw')
-    //   URL.revokeObjectURL(videoUrl)
-    // }
-
-    // video.addEventListener('loadedmetadata', loadedMetaData)
-
-    // video.addEventListener('seeked', seekedEvent)
-
-    // video.addEventListener('error', e => {
-    //   console.error('Video load error:', e)
-    //   URL.revokeObjectURL(videoUrl)
-    // })
-
-    // document.body.appendChild(video)
-    // video.load()
-
-    // // Cleanup on component unmount
-    // return () => {
-    //   video.removeEventListener('loadedmetadata', loadedMetaData)
-    //   video.removeEventListener('seeked', seekedEvent)
-    //   video.removeEventListener('error', () => {
-    //     URL.revokeObjectURL(videoUrl)
-    //   })
-    //   document.body.removeChild(video)
-    //   URL.revokeObjectURL(videoUrl)
-    // }
     video.addEventListener('loadeddata', () => {
-      // Wait for the video to be ready
-      if (video.duration === Infinity || isNaN(Number(video.duration))) {
-        video.currentTime = 1e101
-        const handleTimeUpdate = () => {
-          video.currentTime = 0
-          video.removeEventListener('timeupdate', handleTimeUpdate)
-          setVideoDuration(video.duration)
+      // Seek to a specific time (e.g., 1 second) to capture the frame
+      video.currentTime = 1
+
+      video.addEventListener('seeked', () => {
+        if (ctx && canvas) {
+          // Draw the current video frame on the canvas
+          ctx.drawImage(video, 0, 0, 160, 200)
+
+          // Clean up
+          URL.revokeObjectURL(videoUrl)
         }
-        video.addEventListener('timeupdate', handleTimeUpdate)
-      } else {
-        video.currentTime = 0
-        setVideoDuration(video.duration)
-      }
+      })
     })
 
-    video.addEventListener('seeked', () => {
-      // Now we can draw the frame
-      const canvas = canvasRef.current
-      canvas
-        ?.getContext('2d')
-        ?.drawImage(video, 0, 0, canvas.width, canvas.height)
-      URL.revokeObjectURL(video.src) // Clean up
-      document.body.removeChild(video)
-    })
-
-    video.addEventListener('error', e => {
-      console.error('Video load error:', e)
-      document.body.removeChild(video)
-    })
-
-    document.body.appendChild(video) // Append video to body to ensure it can load
-    video.load() // Load the video to ensure metadata is available
+    return () => {
+      // Clean up the video element
+      video.remove()
+    }
   }, [videoFile])
 
   return (
