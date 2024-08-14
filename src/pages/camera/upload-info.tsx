@@ -91,18 +91,18 @@ const MainUploadSection: React.FC<Props> = ({
     setTextInfo('Set config video')
 
     // const loadedMetaData = () => {
-    //   if (video.duration === Infinity || isNaN(Number(video.duration))) {
-    //     video.currentTime = 1e101
-    //     const handleTimeUpdate = () => {
-    //       video.currentTime = 0
-    //       video.removeEventListener('timeupdate', handleTimeUpdate)
-    //       setVideoDuration(video.duration)
-    //     }
-    //     video.addEventListener('timeupdate', handleTimeUpdate)
-    //   } else {
+    // if (video.duration === Infinity || isNaN(Number(video.duration))) {
+    //   video.currentTime = 1e101
+    //   const handleTimeUpdate = () => {
     //     video.currentTime = 0
+    //     video.removeEventListener('timeupdate', handleTimeUpdate)
     //     setVideoDuration(video.duration)
     //   }
+    //   video.addEventListener('timeupdate', handleTimeUpdate)
+    // } else {
+    //   video.currentTime = 0
+    //   setVideoDuration(video.duration)
+    // }
     // }
 
     // const seekedEvent = () => {
@@ -140,7 +140,18 @@ const MainUploadSection: React.FC<Props> = ({
     // }
     video.addEventListener('loadeddata', () => {
       // Wait for the video to be ready
-      video.currentTime = 0
+      if (video.duration === Infinity || isNaN(Number(video.duration))) {
+        video.currentTime = 1e101
+        const handleTimeUpdate = () => {
+          video.currentTime = 0
+          video.removeEventListener('timeupdate', handleTimeUpdate)
+          setVideoDuration(video.duration)
+        }
+        video.addEventListener('timeupdate', handleTimeUpdate)
+      } else {
+        video.currentTime = 0
+        setVideoDuration(video.duration)
+      }
     })
 
     video.addEventListener('seeked', () => {

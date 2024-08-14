@@ -126,10 +126,10 @@ const EditCover: React.FC<Props> = ({
         }
       }
 
-      video.addEventListener('loadedmetadata', handleLoadedMetadata)
+      video.addEventListener('loadeddata', handleLoadedMetadata)
 
       return () => {
-        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        video.removeEventListener('loadeddata', handleLoadedMetadata)
       }
     }
   }, [videoRef.current, canvasRef.current])
