@@ -135,7 +135,6 @@ const EditCover: React.FC<Props> = ({
     return new Promise((resolve, reject) => {
       if (file.type.match('video')) {
         importFileandPreview(file).then(urlOfFIle => {
-          setVideoUrl(urlOfFIle as string)
           var video = document.createElement('video')
           var timeupdate = function () {
             if (snapImage()) {
