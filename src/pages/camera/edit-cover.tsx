@@ -135,6 +135,7 @@ const EditCover: React.FC<Props> = ({
     return new Promise((resolve, reject) => {
       if (file.type.match('video')) {
         importFileandPreview(file).then(urlOfFIle => {
+          setVideoUrl(urlOfFIle as string)
           var video = document.createElement('video')
           var timeupdate = function () {
             if (snapImage()) {
@@ -172,7 +173,6 @@ const EditCover: React.FC<Props> = ({
           video.muted = true
           video.playsInline = true
           video.currentTime = videoTimeInSeconds
-          video.autoplay = true
           video.play()
         })
       } else {
