@@ -91,8 +91,8 @@ const EditCover: React.FC<Props> = ({
 
   const getThumbnail = async (videoFile: File) => {
     const test = await generateThumbnail(videoFile)
-    // setThumbnail(test as { blob: Blob; url: string })
-    console.log(test)
+    setThumbnail(test as { blob: Blob; url: string })
+    // console.log(test)
   }
 
   const importFileandPreview = (file: File, revoke?: boolean) => {
@@ -157,13 +157,13 @@ const EditCover: React.FC<Props> = ({
             canvas
               .getContext('2d')!
               .drawImage(video, 0, 0, canvas.width, canvas.height)
-            // canvas.toBlob(blob => {
-            //   if (blob) {
-            //     resolve({ blob, url: URL.createObjectURL(blob) })
-            //     return true
-            //   }
-            //   return false
-            // }, 'image/jpeg')
+            canvas.toBlob(blob => {
+              if (blob) {
+                resolve({ blob, url: URL.createObjectURL(blob) })
+                return true
+              }
+              return false
+            }, 'image/jpeg')
             return true
           }
           video.addEventListener('timeupdate', timeupdate)
@@ -352,10 +352,7 @@ const EditCover: React.FC<Props> = ({
               ) : (
                 <Skeleton width="260px" height="200px" />
               )}
-              <canvas
-                ref={canvasRef}
-                style={{ width: '100%', height: 'auto' }}
-              />
+              <canvas ref={canvasRef} style={{ display: 'none' }} />
             </div>
             <div className="mt-6 flex flex-col items-center justify-center gap-4 rounded-lg border p-4">
               <BodyText
