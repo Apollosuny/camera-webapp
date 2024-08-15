@@ -410,6 +410,7 @@ const EditCover: React.FC<Props> = ({
                       crossOrigin="anonymous"
                       draggable={false}
                       muted
+                      autoPlay={false}
                       preload="metadata"
                       style={{
                         width: '100%',
