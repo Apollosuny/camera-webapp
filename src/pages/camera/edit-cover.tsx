@@ -85,15 +85,18 @@ const EditCover: React.FC<Props> = ({
 
   useEffect(() => {
     if (videoFile) {
-      getThumbnail(videoFile)
+      // getThumbnail(videoFile)
+      // generateThumbnails()
+      const url = URL.createObjectURL(videoFile)
+      setVideoUrl(url)
     }
   }, [videoFile])
 
-  const getThumbnail = async (videoFile: File) => {
-    const test = await generateThumbnail(videoFile)
-    setThumbnail(test as { blob: Blob; url: string })
-    // console.log(test)
-  }
+  // const getThumbnail = async (videoFile: File) => {
+  //   const test = await generateThumbnail(videoFile, 10)
+  //   console.log(test)
+  //   // setThumbnail(test as { blob: Blob; url: string })
+  // }
 
   const importFileandPreview = (file: File, revoke?: boolean) => {
     return new Promise((resolve, reject) => {
@@ -181,42 +184,76 @@ const EditCover: React.FC<Props> = ({
     })
   }
 
-  const generateThumbnail = async (videoFile: File) => {
+  const generateThumbnail = async (
+    videoFile: File,
+    numberOfThumbnails: number,
+  ) => {
     let thumbnail: any
+    let thumbArr: { blob: Blob; url: string }[] = []
+    let fractionArr: number[] = []
     return new Promise(async (resolve, reject) => {
       await getVideoDuration(videoFile).then(async (duration: any) => {
-        let promiseArray = getVideoThumbnail(videoFile, 0)
-        await promiseArray
-          .then(res => {
-            thumbnail = res
-            resolve(thumbnail)
+        if (numberOfThumbnails > 1) {
+          for (let i = 0; i <= duration; i += duration / numberOfThumbnails) {
+            fractionArr.push(Math.floor(i))
+          }
+          // the array of promises
+          let promiseArray = fractionArr.map(time => {
+            return getVideoThumbnail(videoFile, time)
           })
-          .catch(err => {
-            console.error(err)
-          })
-          .finally(() => {
-            resolve(thumbnail)
-          })
+          // console.log('promiseArray', promiseArray)
+          // console.log('duration', duration)
+          // console.log('fractions', fractionArr)
+          await Promise.all(promiseArray)
+            .then(res => {
+              // res.forEach(res => {
+              //   // console.log('res', res.slice(0,8))
+              //   thumbArr.push(res as { blob: Blob; url: string })
+              // })
+              // // console.log('thumbnail', thumbnail)
+              // resolve(thumbArr)
+              console.log(res)
+            })
+            .catch(err => {
+              console.error(err)
+            })
+            .finally(() => {
+              resolve(thumbArr)
+            })
+        } else if (numberOfThumbnails === 1) {
+          let promiseArray = getVideoThumbnail(videoFile, 0)
+          await promiseArray
+            .then(res => {
+              thumbnail = res
+              resolve(thumbnail)
+            })
+            .catch(err => {
+              console.error(err)
+            })
+            .finally(() => {
+              resolve(thumbnail)
+            })
+        }
       })
     })
   }
 
-  // useEffect(() => {
-  //   if (videoRef.current) {
-  //     const video = videoRef.current
-  //     video.currentTime = 1
+  useEffect(() => {
+    if (videoRef.current) {
+      const video = videoRef.current
+      video.currentTime = 1
 
-  //     const handleLoadedData = () => {
-  //       updateThumbnail(video)
-  //     }
+      const handleLoadedData = () => {
+        updateThumbnail(video)
+      }
 
-  //     video.addEventListener('loadeddata', handleLoadedData)
+      video.addEventListener('loadeddata', handleLoadedData)
 
-  //     return () => {
-  //       video.removeEventListener('loadeddata', handleLoadedData)
-  //     }
-  //   }
-  // }, [videoRef.current])
+      return () => {
+        video.removeEventListener('loadeddata', handleLoadedData)
+      }
+    }
+  }, [videoRef.current])
 
   useEffect(() => {
     if (videoRef.current && canvasRef.current) {
@@ -278,8 +315,9 @@ const EditCover: React.FC<Props> = ({
       const captureFrame = (time: number) => {
         return new Promise<void>(resolve => {
           video.currentTime = time
-
+          console.log('Run outside seeked')
           const handleSeeked = () => {
+            console.log('Run inside seekd')
             video.removeEventListener('seeked', handleSeeked)
 
             const width = 34
@@ -294,6 +332,7 @@ const EditCover: React.FC<Props> = ({
                 if (blob) {
                   const url = URL.createObjectURL(blob)
                   thumbnailsArr.push(url)
+                  console.log(url)
                   resolve()
                 } else {
                   resolve()
