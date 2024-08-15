@@ -99,6 +99,7 @@ const EditCover: React.FC<Props> = ({
     return new Promise((resolve, reject) => {
       window.URL = window.URL || window.webkitURL
       let preview = window.URL.createObjectURL(file)
+      setVideoUrl(preview)
       if (revoke) {
         window.URL.revokeObjectURL(preview)
       }
@@ -113,7 +114,6 @@ const EditCover: React.FC<Props> = ({
       if (videoFile) {
         if (videoFile.type.match('video')) {
           importFileandPreview(videoFile).then(url => {
-            setVideoUrl(url as string)
             let video = document.createElement('video')
             video.addEventListener('loadeddata', function () {
               resolve(video.duration)
