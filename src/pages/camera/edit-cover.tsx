@@ -85,27 +85,135 @@ const EditCover: React.FC<Props> = ({
 
   useEffect(() => {
     if (videoFile) {
-      const url = URL.createObjectURL(videoFile)
-      setVideoUrl(url)
+      getThumbnail(videoFile)
     }
   }, [videoFile])
 
-  useEffect(() => {
-    if (videoRef.current) {
-      const video = videoRef.current
-      video.currentTime = 1
+  const getThumbnail = async (videoFile: File) => {
+    const test = await generateThumbnail(videoFile)
+    setThumbnail(test as { blob: Blob; url: string })
+  }
 
-      const handleLoadedData = () => {
-        updateThumbnail(video)
+  const importFileandPreview = (file: File, revoke?: boolean) => {
+    return new Promise((resolve, reject) => {
+      window.URL = window.URL || window.webkitURL
+      let preview = window.URL.createObjectURL(file)
+      if (revoke) {
+        window.URL.revokeObjectURL(preview)
       }
+      setTimeout(() => {
+        resolve(preview)
+      }, 100)
+    })
+  }
 
-      video.addEventListener('loadeddata', handleLoadedData)
-
-      return () => {
-        video.removeEventListener('loadeddata', handleLoadedData)
+  const getVideoDuration = (videoFile: File) => {
+    return new Promise((resolve, reject) => {
+      if (videoFile) {
+        if (videoFile.type.match('video')) {
+          importFileandPreview(videoFile).then(url => {
+            setVideoUrl(url as string)
+            let video = document.createElement('video')
+            video.addEventListener('loadeddata', function () {
+              resolve(video.duration)
+            })
+            video.preload = 'metadata'
+            video.src = url as string
+            // Load video in Safari / IE11
+            video.muted = true
+            video.playsInline = true
+            video.play()
+          })
+        }
+      } else {
+        reject(0)
       }
-    }
-  }, [videoRef.current])
+    })
+  }
+
+  const getVideoThumbnail = (file: File, videoTimeInSeconds: number) => {
+    return new Promise((resolve, reject) => {
+      if (file.type.match('video')) {
+        importFileandPreview(file).then(urlOfFIle => {
+          var video = document.createElement('video')
+          var timeupdate = function () {
+            if (snapImage()) {
+              video.removeEventListener('timeupdate', timeupdate)
+              video.pause()
+            }
+          }
+          video.addEventListener('loadeddata', function () {
+            if (snapImage()) {
+              video.removeEventListener('timeupdate', timeupdate)
+            }
+          })
+          var snapImage = function () {
+            if (!canvasRef.current) return
+            // var canvas = document.createElement('canvas')
+            var canvas = canvasRef.current
+            canvas.width = video.videoWidth
+            canvas.height = video.videoHeight
+            canvas
+              .getContext('2d')!
+              .drawImage(video, 0, 0, canvas.width, canvas.height)
+            canvas.toBlob(blob => {
+              if (blob) {
+                resolve({ blob, url: URL.createObjectURL(blob) })
+              }
+            }, 'image/jpeg')
+            return true
+          }
+          video.addEventListener('timeupdate', timeupdate)
+          video.preload = 'metadata'
+          video.src = urlOfFIle as string
+          // Load video in Safari / IE11
+          video.muted = true
+          video.playsInline = true
+          video.currentTime = videoTimeInSeconds
+          video.play()
+        })
+      } else {
+        reject('file not valid')
+      }
+    })
+  }
+
+  const generateThumbnail = async (videoFile: File) => {
+    let thumbnail: any
+    return new Promise(async (resolve, reject) => {
+      await getVideoDuration(videoFile).then(async (duration: any) => {
+        let promiseArray = getVideoThumbnail(videoFile, 0)
+        await promiseArray
+          .then(res => {
+            thumbnail = res
+            resolve(thumbnail)
+          })
+          .catch(err => {
+            console.error(err)
+          })
+          .finally(() => {
+            resolve(thumbnail)
+          })
+      })
+    })
+  }
+
+  // useEffect(() => {
+  //   if (videoRef.current) {
+  //     const video = videoRef.current
+  //     video.currentTime = 1
+
+  //     const handleLoadedData = () => {
+  //       updateThumbnail(video)
+  //     }
+
+  //     video.addEventListener('loadeddata', handleLoadedData)
+
+  //     return () => {
+  //       video.removeEventListener('loadeddata', handleLoadedData)
+  //     }
+  //   }
+  // }, [videoRef.current])
 
   useEffect(() => {
     if (videoRef.current && canvasRef.current) {
@@ -288,7 +396,7 @@ const EditCover: React.FC<Props> = ({
                 >
                   <div
                     className={classNames(
-                      'absolute top-0 h-[48px] w-[36px] rounded-md border-2 border-[var(--color-mainGreen)] overflow-hidden',
+                      'absolute top-0 h-[48px] w-[36px] rounded-md border-[6px] border-red-500 overflow-hidden',
                       isEmpty(thumbnails) && 'invisible',
                     )}
                   >
