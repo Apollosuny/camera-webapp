@@ -99,7 +99,6 @@ const EditCover: React.FC<Props> = ({
     return new Promise((resolve, reject) => {
       window.URL = window.URL || window.webkitURL
       let preview = window.URL.createObjectURL(file)
-      setVideoUrl(preview)
       if (revoke) {
         window.URL.revokeObjectURL(preview)
       }
@@ -169,10 +168,12 @@ const EditCover: React.FC<Props> = ({
           video.addEventListener('timeupdate', timeupdate)
           video.preload = 'metadata'
           video.src = urlOfFIle as string
+          setVideoUrl(urlOfFIle as string)
           // Load video in Safari / IE11
           video.muted = true
           video.playsInline = true
           video.currentTime = videoTimeInSeconds
+          video.autoplay = true
           video.play()
         })
       } else {
