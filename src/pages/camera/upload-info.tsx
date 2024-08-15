@@ -141,23 +141,11 @@ const MainUploadSection: React.FC<Props> = ({
           })
           var snapImage = function () {
             if (!canvasRef.current) return
-            // var canvas = document.createElement('canvas')
             var canvas = canvasRef.current
             canvas.width = video.videoWidth
             canvas.height = video.videoHeight
             canvas.getContext('2d')!.drawImage(video, 0, 0, 160, 200)
-            var image = canvas.toDataURL()
-            var success = image.length > 100000
-            if (success) {
-              URL.revokeObjectURL(urlOfFIle as string)
-              // resolve(image)
-            }
-            canvas.toBlob(blob => {
-              if (blob) {
-                resolve(URL.createObjectURL(blob))
-              }
-            }, 'image/jpeg')
-            return success
+            return true
           }
           video.addEventListener('timeupdate', timeupdate)
           video.preload = 'metadata'

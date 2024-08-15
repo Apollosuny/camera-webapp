@@ -6,8 +6,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable'
 import Skeleton from 'react-loading-skeleton'
 
-import ImageSelector from './image-selector'
 import { BodyText } from '@/components/typography/body-text'
+
+import ImageSelector from './image-selector'
 
 type Props = {
   isShowing: boolean
@@ -110,11 +111,6 @@ const EditCover: React.FC<Props> = ({
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current
 
-      video.src = videoUrl
-      video.muted = true // Mute the video to avoid autoplay issues
-      video.playsInline = true // For mobile devices
-      video.crossOrigin = 'anonymous'
-
       const handleLoadedMetadata = () => {
         if (video.duration === Infinity || isNaN(Number(video.duration))) {
           video.currentTime = 1e101
@@ -131,19 +127,11 @@ const EditCover: React.FC<Props> = ({
         }
       }
 
-      video.addEventListener('loadeddata', handleLoadedMetadata)
+      video.addEventListener('loadedmetadata', handleLoadedMetadata)
 
-      video.addEventListener('error', e => {
-        console.error('Video load error:', e)
-        document.body.removeChild(video)
-      })
-
-      document.body.appendChild(video) // Append video to body to ensure it can load
-      video.load()
-
-      // return () => {
-      //   video.removeEventListener('loadeddata', handleLoadedMetadata)
-      // }
+      return () => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      }
     }
   }, [videoRef.current, canvasRef.current])
 
@@ -232,7 +220,7 @@ const EditCover: React.FC<Props> = ({
 
   return (
     isShowing && (
-      <div className="fixed left-1/2 top-0 z-[100] flex h-full w-full max-w-md -translate-x-1/2 flex-col justify-between bg-gray-400">
+      <div className="fixed left-1/2 top-0 z-[100] flex h-full w-full max-w-md -translate-x-1/2 flex-col justify-between bg-gray-100">
         <div className="w-full grow">
           <Header onClose={onClose} onDone={handleSelectThumbnail} />
           <div className="px-5 py-8">
@@ -316,7 +304,7 @@ const EditCover: React.FC<Props> = ({
                   </div>
                 </Draggable>
                 {isEmpty(thumbnails) && (
-                  <Skeleton width="260px" height="48px" />
+                  <Skeleton height="48px" style={{ width: '100%' }} />
                 )}
               </div>
               <div className="h-[1px] w-full bg-[#E8E7E7]" />
