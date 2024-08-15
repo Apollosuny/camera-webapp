@@ -400,7 +400,6 @@ const EditCover: React.FC<Props> = ({
                   <div
                     className={classNames(
                       'absolute top-0 h-[48px] w-[36px] rounded-md border-[6px] border-red-500 overflow-hidden',
-                      isEmpty(thumbnails) && 'invisible',
                     )}
                   >
                     {/* eslint-disable jsx-a11y/media-has-caption */}
