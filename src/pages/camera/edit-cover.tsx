@@ -409,7 +409,7 @@ const EditCover: React.FC<Props> = ({
                       playsInline
                       crossOrigin="anonymous"
                       draggable={false}
-                      autoPlay={false}
+                      autoPlay={true}
                       style={{
                         width: '100%',
                         height: '100%',
