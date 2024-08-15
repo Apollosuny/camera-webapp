@@ -135,7 +135,8 @@ const EditCover: React.FC<Props> = ({
     return new Promise((resolve, reject) => {
       if (file.type.match('video')) {
         importFileandPreview(file).then(urlOfFIle => {
-          var video = document.createElement('video')
+          if (!videoRef.current) return
+          var video = videoRef.current
           var timeupdate = function () {
             if (snapImage()) {
               video.removeEventListener('timeupdate', timeupdate)
@@ -172,7 +173,7 @@ const EditCover: React.FC<Props> = ({
           video.muted = true
           video.playsInline = true
           video.currentTime = videoTimeInSeconds
-          video.play()
+          // video.play()
         })
       } else {
         reject('file not valid')
@@ -408,7 +409,7 @@ const EditCover: React.FC<Props> = ({
                       playsInline
                       crossOrigin="anonymous"
                       draggable={false}
-                      autoPlay={false}
+                      autoPlay={true}
                       style={{
                         width: '100%',
                         height: '100%',
