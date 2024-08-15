@@ -159,9 +159,11 @@ const EditCover: React.FC<Props> = ({
             canvas.toBlob(blob => {
               if (blob) {
                 resolve({ blob, url: URL.createObjectURL(blob) })
+                return true
               }
+              return false
             }, 'image/jpeg')
-            return true
+            return false
           }
           video.addEventListener('timeupdate', timeupdate)
           video.preload = 'metadata'
