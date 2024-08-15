@@ -168,7 +168,6 @@ const EditCover: React.FC<Props> = ({
           video.addEventListener('timeupdate', timeupdate)
           video.preload = 'metadata'
           video.src = urlOfFIle as string
-          setVideoUrl(urlOfFIle as string)
           // Load video in Safari / IE11
           video.muted = true
           video.playsInline = true
