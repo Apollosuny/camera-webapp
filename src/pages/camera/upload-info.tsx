@@ -6,7 +6,7 @@ import { FileType, POST_STATUS } from '@/lib/hooks/usePostCreate'
 
 import EditCover from './edit-cover'
 import { VideoPlayer } from '@/components/video/video-player'
-import { useThumbnailGenerator } from './useThumbnailGenerator'
+import { useThumbnailGenerator } from '../../lib/hooks/useThumbnailGenerator'
 
 type Props = {
   images: FileType[]
@@ -294,14 +294,6 @@ const MainUploadSection: React.FC<Props> = ({
         </button>
       </div>
       <div> </div> */}
-      {showEditCover && (
-        <EditCover
-          isShowing={showEditCover}
-          videoFile={videoFile}
-          onClose={onCloseEditCover}
-          onSelectThumbnail={onUpdatedThumbnail}
-        />
-      )}
       {showEditCover && (
         <EditCover
           isShowing={showEditCover}
