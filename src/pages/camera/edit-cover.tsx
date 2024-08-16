@@ -88,26 +88,13 @@ const EditCover: React.FC<Props> = ({
     if (videoFile) {
       const url = URL.createObjectURL(videoFile)
       setVideoUrl(url)
-      // generateThumbnail(videoFile)
-      // initialThumbnails(videoFile)
     }
   }, [videoFile])
 
-  // const { generateThumbnail, loading } = useThumbnailGenerator(
-  //   canvasRef,
-  //   setVideoDuration,
-  //   10,
-  // )
-
-  // const initialThumbnails = async (videoFile: File) => {
-  //   const res = await generateThumbnail(videoFile)
-  //   console.log(res)
-  //   setThumbnails(res as string[])
-  // }
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current
-      video.currentTime = 1
+      video.currentTime = 0.1
 
       const handleLoadedData = () => {
         updateThumbnail(video)
