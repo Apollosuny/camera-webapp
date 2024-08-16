@@ -112,10 +112,10 @@ const EditCover: React.FC<Props> = ({
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current
 
-      // video.src = videoUrl
-      // video.muted = true // Mute the video to avoid autoplay issues
-      // video.playsInline = true // For mobile devices
-      // video.crossOrigin = 'anonymous'
+      video.src = videoUrl
+      video.muted = true // Mute the video to avoid autoplay issues
+      video.playsInline = true // For mobile devices
+      video.crossOrigin = 'anonymous'
 
       const handleLoadedMetadata = () => {
         if (video.duration === Infinity || isNaN(Number(video.duration))) {
