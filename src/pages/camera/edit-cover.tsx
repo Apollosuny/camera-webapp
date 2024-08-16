@@ -94,7 +94,7 @@ const EditCover: React.FC<Props> = ({
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current
-      video.currentTime = 0.1
+      video.currentTime = 2
 
       const handleLoadedData = () => {
         updateThumbnail(video)
