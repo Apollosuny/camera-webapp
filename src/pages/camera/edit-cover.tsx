@@ -94,7 +94,7 @@ const EditCover: React.FC<Props> = ({
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current
-      video.currentTime = 2
+      video.currentTime = 1
 
       const handleLoadedData = () => {
         updateThumbnail(video)
@@ -106,7 +106,7 @@ const EditCover: React.FC<Props> = ({
         video.removeEventListener('loadeddata', handleLoadedData)
       }
     }
-  }, [videoRef.current])
+  }, [videoRef.current, videoDuration])
 
   useEffect(() => {
     if (videoRef.current && canvasRef.current) {
