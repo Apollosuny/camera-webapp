@@ -1,9 +1,12 @@
-import { RefObject } from 'react'
+import { RefObject, useState } from 'react'
 
 export const useThumbnailGenerator = (
   canvasRef: RefObject<HTMLCanvasElement>,
   setVideoDuration: (value: number) => void,
+  numberOfThumbnails?: number,
 ) => {
+  const [loading, setLoading] = useState<boolean>(false)
+
   const importFileandPreview = (file: File, revoke?: boolean) => {
     return new Promise((resolve, reject) => {
       window.URL = window.URL || window.webkitURL
@@ -33,7 +36,6 @@ export const useThumbnailGenerator = (
             video.muted = true
             video.playsInline = true
             video.play()
-            //  window.URL.revokeObjectURL(url);
           })
         }
       } else {
@@ -63,7 +65,20 @@ export const useThumbnailGenerator = (
             var canvas = canvasRef.current
             canvas.width = video.videoWidth
             canvas.height = video.videoHeight
-            canvas.getContext('2d')!.drawImage(video, 0, 0, 160, 200)
+            if (numberOfThumbnails) {
+              canvas
+                .getContext('2d')!
+                .drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
+              canvas.toBlob(blob => {
+                if (blob) {
+                  const url = URL.createObjectURL(blob)
+                  resolve(url)
+                }
+              })
+            } else {
+              canvas.getContext('2d')!.drawImage(video, 0, 0, 160, 200)
+            }
+
             return true
           }
           video.addEventListener('timeupdate', timeupdate)
@@ -82,26 +97,32 @@ export const useThumbnailGenerator = (
   }
 
   const generateThumbnail = async (videoFile: File) => {
-    let thumbnail: any
-    return new Promise(async (resolve, reject) => {
-      await getVideoDuration(videoFile).then(async (duration: any) => {
-        let promiseArray = getVideoThumbnail(videoFile, 0)
-        await promiseArray
-          .then(res => {
-            thumbnail = res
-            resolve(thumbnail)
-          })
-          .catch(err => {
-            console.error(err)
-          })
-          .finally(() => {
-            resolve(thumbnail)
-          })
-      })
-    })
+    try {
+      setLoading(true)
+      const duration: any = await getVideoDuration(videoFile)
+      if (!numberOfThumbnails) {
+        return await getVideoThumbnail(videoFile, 0)
+      } else {
+        let fractions: any = []
+        for (let i = 0; i <= duration; i += duration / numberOfThumbnails) {
+          fractions.push(Math.floor(i))
+        }
+        const promiseArr = fractions.map((time: number) =>
+          getVideoThumbnail(videoFile, time),
+        )
+        const results = await Promise.all(promiseArr)
+        return results
+      }
+    } catch (err) {
+      console.error(err)
+      throw err
+    } finally {
+      setLoading(false)
+    }
   }
 
   return {
+    loading,
     generateThumbnail,
   }
 }

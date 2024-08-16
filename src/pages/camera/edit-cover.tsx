@@ -9,6 +9,7 @@ import Skeleton from 'react-loading-skeleton'
 import { BodyText } from '@/components/typography/body-text'
 
 import ImageSelector from './image-selector'
+import { useThumbnailGenerator } from '@/lib/hooks/useThumbnailGenerator'
 
 type Props = {
   isShowing: boolean
@@ -87,9 +88,22 @@ const EditCover: React.FC<Props> = ({
     if (videoFile) {
       const url = URL.createObjectURL(videoFile)
       setVideoUrl(url)
+      // generateThumbnail(videoFile)
+      // initialThumbnails(videoFile)
     }
   }, [videoFile])
 
+  // const { generateThumbnail, loading } = useThumbnailGenerator(
+  //   canvasRef,
+  //   setVideoDuration,
+  //   10,
+  // )
+
+  // const initialThumbnails = async (videoFile: File) => {
+  //   const res = await generateThumbnail(videoFile)
+  //   console.log(res)
+  //   setThumbnails(res as string[])
+  // }
   useEffect(() => {
     if (videoRef.current) {
       const video = videoRef.current
@@ -253,6 +267,7 @@ const EditCover: React.FC<Props> = ({
                 Select a thumbnail for your grid. Choose a frame from your video
                 or pick from your photos.
               </BodyText>
+
               <div ref={thumbnailContainerRef} className="relative my-2 w-full">
                 <div className="flex items-center rounded-xl">
                   {thumbnails.map((item, index) => (
