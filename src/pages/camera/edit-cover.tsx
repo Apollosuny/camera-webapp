@@ -166,11 +166,9 @@ const EditCover: React.FC<Props> = ({
       const thumbnailsArr: string[] = []
 
       const captureFrame = (time: number) => {
-        return new Promise<void>(resolve => {
+        return new Promise(resolve => {
           video.currentTime = time
-          console.log('Run outside seeked')
           const handleSeeked = () => {
-            console.log('Run inside seekd')
             video.removeEventListener('seeked', handleSeeked)
 
             const width = 34
@@ -184,11 +182,10 @@ const EditCover: React.FC<Props> = ({
               blob => {
                 if (blob) {
                   const url = URL.createObjectURL(blob)
-                  thumbnailsArr.push(url)
-                  console.log(url)
-                  resolve()
+
+                  resolve(url)
                 } else {
-                  resolve()
+                  resolve('')
                 }
               },
               'image/jpeg',
@@ -210,7 +207,10 @@ const EditCover: React.FC<Props> = ({
       const generateAllThumbnails = async () => {
         for (let i = 0; i < numberOfThumbnails; i++) {
           const time = (duration / numberOfThumbnails) * i
-          await captureFrame(time)
+          const url = await captureFrame(time)
+          if (!isEmpty(url)) {
+            thumbnailsArr.push(url as string)
+          }
         }
         setThumbnails(thumbnailsArr)
       }
