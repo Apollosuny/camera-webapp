@@ -144,6 +144,10 @@ const UploadContentLayout: React.FC = () => {
     setText(`Is progressive app: ${isPwa}`)
   }, [isPwa])
 
+  const openPWA = () => {
+    window.location.href = '/'
+  }
+
   return (
     <div className="fixed left-1/2 top-0 z-[100] flex h-full w-full max-w-md -translate-x-1/2 flex-col justify-between bg-mainGrey">
       <div className="flex w-full grow flex-col">
@@ -154,6 +158,9 @@ const UploadContentLayout: React.FC = () => {
           next={handleNext}
         />
         <h2 className="font-semibold">{text}</h2>
+        <button type="button" className="h-20 w-40" onClick={openPWA}>
+          Open PWA
+        </button>
         {renderUploadContent(activeStep)}
       </div>
     </div>
