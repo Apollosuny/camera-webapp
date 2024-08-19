@@ -6,10 +6,12 @@ type Props = {
   isRecording?: boolean
   progress?: number
   onClick: () => void
-  onMouseDown: () => void
-  onMouseUp: () => void
-  onTouchStart: () => void
-  onTouchEnd: () => void
+  // onMouseDown: () => void
+  // onMouseUp: () => void
+  // onTouchStart: () => void
+  // onTouchEnd: () => void
+  onPointerUp: () => void
+  onPointerDown: () => void
   customClassNames?: string
 }
 
@@ -19,10 +21,12 @@ const RecordingButton: React.FC<Props> = ({
   progress = 0,
   customClassNames,
   onClick,
-  onMouseDown,
-  onMouseUp,
-  onTouchStart,
-  onTouchEnd,
+  // onMouseDown,
+  // onMouseUp,
+  // onTouchStart,
+  // onTouchEnd,
+  onPointerUp,
+  onPointerDown,
 }) => {
   const circleRef = useRef<SVGCircleElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -99,11 +103,13 @@ const RecordingButton: React.FC<Props> = ({
           type="button"
           className="relative z-[999] flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-white"
           onClick={onClick}
-          onMouseDown={onMouseDown}
-          onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
+          // onMouseDown={onMouseDown}
+          // onMouseUp={onMouseUp}
+          // onMouseLeave={onMouseUp}
+          // onTouchStart={onTouchStart}
+          // onTouchEnd={onTouchEnd}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
           onContextMenu={e => e.preventDefault()}
         />
         <svg

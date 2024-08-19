@@ -117,6 +117,33 @@ const UploadContentLayout: React.FC = () => {
     }
   }, [state.imageFiles, state.videoFile])
 
+  const [isPwa, setIsPwa] = useState<boolean>(false)
+  const [text, setText] = useState<string>('')
+
+  useEffect(() => {
+    // Check if the app is installed
+    const checkPWA = async () => {
+      // Check if the service worker is registered
+      const registration = await navigator.serviceWorker.getRegistration()
+      if (registration) {
+        // Check if the app is in standalone mode
+        const isStandalone = window.matchMedia(
+          '(display-mode: standalone)',
+        ).matches
+        setIsPwa(isStandalone)
+      } else {
+        setIsPwa(false)
+      }
+    }
+
+    checkPWA()
+  }, [])
+
+  useEffect(() => {
+    console.log(isPwa)
+    setText(`Is progressive app: ${isPwa}`)
+  }, [isPwa])
+
   return (
     <div className="fixed left-1/2 top-0 z-[100] flex h-full w-full max-w-md -translate-x-1/2 flex-col justify-between bg-mainGrey">
       <div className="flex w-full grow flex-col">
@@ -126,6 +153,7 @@ const UploadContentLayout: React.FC = () => {
           prev={handleBack}
           next={handleNext}
         />
+        <h2 className="font-semibold">{text}</h2>
         {renderUploadContent(activeStep)}
       </div>
     </div>
