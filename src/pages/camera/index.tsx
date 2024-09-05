@@ -15,6 +15,8 @@ const STEP = {
   DETAILS: 2,
 }
 
+const pwaUrl = 'apollosunycamera://'
+
 const UploadContentLayout: React.FC = () => {
   const [activeStep, setActiveStep] = useState<number>(STEP.TYPE)
   const [showDiscardPost, setShowDiscardPost] = useState<boolean>(false)
@@ -66,6 +68,10 @@ const UploadContentLayout: React.FC = () => {
   const handleBackToCamera = () => {
     state.resetMediaState()
     setActiveStep(STEP.TYPE)
+  }
+
+  const onOpenPWA = () => {
+    window.location.href = pwaUrl
   }
 
   const renderUploadContent = (step: number) => {
@@ -158,7 +164,7 @@ const UploadContentLayout: React.FC = () => {
           next={handleNext}
         />
         <h2 className="font-semibold">{text}</h2>
-        <button type="button" className="h-20 w-40" onClick={openPWA}>
+        <button type="button" className="h-20 w-40" onClick={onOpenPWA}>
           Open PWA
         </button>
         {renderUploadContent(activeStep)}

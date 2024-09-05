@@ -24,9 +24,10 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "url_handlers": [
+  "protocol_handlers": [
     {
-      "origin": "https://qa.friendzone.pro/"
+      "protocol": "apollosunycamera",
+      "url": "/%s"
     }
   ]
 }
