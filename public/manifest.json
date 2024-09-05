@@ -24,6 +24,13 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://camera-webapp.vercel.app/manifest.json"
+    }
+  ],
+  "prefer_related_applications": true,
   "protocol_handlers": [
     {
       "protocol": "apollosunycamera",

@@ -150,8 +150,8 @@ const UploadContentLayout: React.FC = () => {
     setText(`Is progressive app: ${isPwa}`)
   }, [isPwa])
 
-  const openPWA = () => {
-    window.location.href = '/'
+  const onOpenPWAV2 = () => {
+    window.open(pwaUrl)
   }
 
   return (
@@ -166,6 +166,9 @@ const UploadContentLayout: React.FC = () => {
         <h2 className="font-semibold">{text}</h2>
         <button type="button" className="h-20 w-40" onClick={onOpenPWA}>
           Open PWA
+        </button>
+        <button type="button" className="h-20 w-40 mt-2" onClick={onOpenPWAV2}>
+          Open PWA V2
         </button>
         {renderUploadContent(activeStep)}
       </div>
