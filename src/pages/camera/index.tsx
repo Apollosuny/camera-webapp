@@ -15,7 +15,7 @@ const STEP = {
   DETAILS: 2,
 }
 
-const pwaUrl = 'apollosunycamera://'
+const pwaUrl = 'https://camera-webapp.vercel.app'
 
 const UploadContentLayout: React.FC = () => {
   const [activeStep, setActiveStep] = useState<number>(STEP.TYPE)
