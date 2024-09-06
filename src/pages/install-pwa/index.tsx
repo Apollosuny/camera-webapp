@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 type Props = {}
 
@@ -58,31 +58,33 @@ const InstallPWA: React.FC<Props> = () => {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h2>Install Demo</h2>
-        {installable && (
-          <button className="install-button" onClick={handleInstallClick}>
-            INSTALL ME
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="App">
+        <header className="App-header">
+          <h2>Install Demo</h2>
+          {installable && (
+            <button className="install-button" onClick={handleInstallClick}>
+              INSTALL ME
+            </button>
+          )}
+        </header>
+        <div className="mt-3">{postId}</div>
+        <div className="mt-4 text-center">
+          <Link href="/camera">Camera</Link>
+        </div>
+        <div className="mt-10">
+          <button type="button" className="h-20 w-40" onClick={onOpenPWA}>
+            Open PWA
           </button>
-        )}
-      </header>
-      <div className="mt-3">{postId}</div>
-      <div className="mt-4 text-center">
-        <Link href="/camera">Camera</Link>
+        </div>
+        <Link
+          href="https://camera-webapp.vercel.app?postId=123456"
+          target="_blank"
+        >
+          Open with blank
+        </Link>
       </div>
-      <div className="mt-10">
-        <button type="button" className="h-20 w-40" onClick={onOpenPWA}>
-          Open PWA
-        </button>
-      </div>
-      <Link
-        href="https://camera-webapp.vercel.app?postId=123456"
-        target="_blank"
-      >
-        Open with blank
-      </Link>
-    </div>
+    </Suspense>
   )
 }
 
