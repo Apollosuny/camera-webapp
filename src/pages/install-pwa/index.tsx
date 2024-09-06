@@ -63,6 +63,9 @@ const InstallPWA: React.FC<Props> = () => {
           Open PWA
         </button>
       </div>
+      <Link href="https://camera-webapp.vercel.app" target="_blank">
+        Open with blank
+      </Link>
     </div>
   )
 }
