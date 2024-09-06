@@ -1,6 +1,4 @@
-import UploadContentLayout from '@/pages/camera'
 import InstallPWA from '@/pages/install-pwa'
-import Image from 'next/image'
 
 export default function Home() {
   return (

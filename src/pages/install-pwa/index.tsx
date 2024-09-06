@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useParams, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 type Props = {}
@@ -9,6 +10,17 @@ let deferredPrompt: any
 const pwaUrl = 'https://camera-webapp.vercel.app'
 const InstallPWA: React.FC<Props> = () => {
   const [installable, setInstallable] = useState<boolean>(false)
+  const params = useSearchParams()
+  const [postId, setPostId] = useState<string | null>(null)
+  console.log(params?.get('postId'))
+
+  useEffect(() => {
+    if (params?.size! > 0) {
+      setPostId(params?.get('postId')!)
+    } else {
+      setPostId('No id')
+    }
+  }, [params])
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', e => {
@@ -55,6 +67,7 @@ const InstallPWA: React.FC<Props> = () => {
           </button>
         )}
       </header>
+      <div className="mt-3">{postId}</div>
       <div className="mt-4 text-center">
         <Link href="/camera">Camera</Link>
       </div>
@@ -63,7 +76,10 @@ const InstallPWA: React.FC<Props> = () => {
           Open PWA
         </button>
       </div>
-      <Link href="https://camera-webapp.vercel.app" target="_blank">
+      <Link
+        href="https://camera-webapp.vercel.app?postId=123456"
+        target="_blank"
+      >
         Open with blank
       </Link>
     </div>
