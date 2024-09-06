@@ -1,10 +1,12 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 type Props = {}
 
 let deferredPrompt: any
+const pwaUrl = 'https://camera-webapp.vercel.app'
 const InstallPWA: React.FC<Props> = () => {
   const [installable, setInstallable] = useState<boolean>(false)
 
@@ -39,6 +41,10 @@ const InstallPWA: React.FC<Props> = () => {
     })
   }
 
+  const onOpenPWA = () => {
+    window.location.href = pwaUrl
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -49,6 +55,14 @@ const InstallPWA: React.FC<Props> = () => {
           </button>
         )}
       </header>
+      <div className="mt-4 text-center">
+        <Link href="/camera">Camera</Link>
+      </div>
+      <div className="mt-10">
+        <button type="button" className="h-20 w-40" onClick={onOpenPWA}>
+          Open PWA
+        </button>
+      </div>
     </div>
   )
 }
