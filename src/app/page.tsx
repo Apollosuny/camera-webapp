@@ -1,10 +1,7 @@
-import InstallPWA from '@/pages/install-pwa'
+import Video from '@/clients/video'
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* <UploadContentLayout /> */}
-      <InstallPWA />
-    </main>
-  )
+const Page: React.FC = () => {
+  return <Video />
 }
+
+export default Page

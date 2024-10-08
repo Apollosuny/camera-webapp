@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.8",
+    "@ffmpeg/ffmpeg": "^0.12.10",
+    "@ffmpeg/util": "^0.12.1",
     "@types/react-beautiful-dnd": "^13.1.8",
     "classnames": "^2.5.1",
     "lodash": "^4.17.21",
@@ -22,7 +24,8 @@
     "react-draggable": "^4.4.6",
     "react-loading-skeleton": "^3.4.0",
     "react-multi-carousel": "^2.8.5",
-    "styled-components": "^6.1.12"
+    "styled-components": "^6.1.12",
+    "video-stitch": "^1.7.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.7",

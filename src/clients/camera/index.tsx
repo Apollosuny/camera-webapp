@@ -163,13 +163,6 @@ const UploadContentLayout: React.FC = () => {
           prev={handleBack}
           next={handleNext}
         />
-        <h2 className="font-semibold">{text}</h2>
-        <button type="button" className="h-20 w-40" onClick={onOpenPWA}>
-          Open PWA
-        </button>
-        <button type="button" className="h-20 w-40 mt-2" onClick={onOpenPWAV2}>
-          Open PWA V2
-        </button>
         {renderUploadContent(activeStep)}
       </div>
     </div>
