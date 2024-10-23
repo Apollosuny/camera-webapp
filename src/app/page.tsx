@@ -1,7 +1,7 @@
-import Video from '@/clients/video'
+import Home from '@/clients/home'
 
 const Page: React.FC = () => {
-  return <Video />
+  return <Home />
 }
 
 export default Page

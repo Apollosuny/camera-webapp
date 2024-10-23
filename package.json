@@ -25,7 +25,8 @@
     "react-loading-skeleton": "^3.4.0",
     "react-multi-carousel": "^2.8.5",
     "styled-components": "^6.1.12",
-    "video-stitch": "^1.7.1"
+    "video-stitch": "^1.7.1",
+    "xstate": "^5.18.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.7",

@@ -1,7 +1,7 @@
 'use client'
 
-import { ChevronLeft, Trash2 } from 'lucide-react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import { ChevronLeft } from 'lucide-react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import UploadPreview from './upload-preview'
 import UploadType, { UploadTypeRef } from './upload-type'
@@ -14,8 +14,6 @@ const STEP = {
   PREVIEW: 1,
   DETAILS: 2,
 }
-
-const pwaUrl = 'https://camera-webapp.vercel.app'
 
 const UploadContentLayout: React.FC = () => {
   const [activeStep, setActiveStep] = useState<number>(STEP.TYPE)
@@ -70,10 +68,6 @@ const UploadContentLayout: React.FC = () => {
     setActiveStep(STEP.TYPE)
   }
 
-  const onOpenPWA = () => {
-    window.location.href = pwaUrl
-  }
-
   const renderUploadContent = (step: number) => {
     switch (step) {
       case 0:
@@ -123,37 +117,6 @@ const UploadContentLayout: React.FC = () => {
     }
   }, [state.imageFiles, state.videoFile])
 
-  const [isPwa, setIsPwa] = useState<boolean>(false)
-  const [text, setText] = useState<string>('')
-
-  useEffect(() => {
-    // Check if the app is installed
-    const checkPWA = async () => {
-      // Check if the service worker is registered
-      const registration = await navigator.serviceWorker.getRegistration()
-      if (registration) {
-        // Check if the app is in standalone mode
-        const isStandalone = window.matchMedia(
-          '(display-mode: standalone)',
-        ).matches
-        setIsPwa(isStandalone)
-      } else {
-        setIsPwa(false)
-      }
-    }
-
-    checkPWA()
-  }, [])
-
-  useEffect(() => {
-    console.log(isPwa)
-    setText(`Is progressive app: ${isPwa}`)
-  }, [isPwa])
-
-  const onOpenPWAV2 = () => {
-    window.open(pwaUrl)
-  }
-
   return (
     <div className="fixed left-1/2 top-0 z-[100] flex h-full w-full max-w-md -translate-x-1/2 flex-col justify-between bg-mainGrey">
       <div className="flex w-full grow flex-col">
@@ -178,12 +141,7 @@ type HeaderProps = {
   next: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({
-  currentStep,
-  prev,
-  next,
-  onShowDiscardPost,
-}) => {
+const Header: React.FC<HeaderProps> = ({ currentStep, prev, next }) => {
   return (
     <div className="relative flex items-center border-b border-grey-200 bg-grey-50 px-5 py-4">
       <div
